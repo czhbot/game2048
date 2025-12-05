@@ -60,6 +60,7 @@ class AuthController {
                 httpOnly: true,
                 secure: isProd,                // prod = https
                 sameSite: isProd ? 'None' : 'Lax',
+                maxAge: 30 * 24 * 60 * 60 * 1000, // 30 天
             });
             
             // 返回用户信息和访问令牌

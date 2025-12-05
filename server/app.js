@@ -80,10 +80,8 @@ app.use((err, req, res, next) => {
     }
 });
 
-// 获取端口
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 7860;
 
-// 启动服务器
 app.listen(PORT, () => {
-    console.log(`服务器运行在 http://localhost:${PORT}`);
+  console.log("Server running on port " + PORT);
 });
