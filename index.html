@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048 Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- 左侧区域容器 -->
+        <div class="left-area">
+            <!-- 排行榜区域 -->
+            <div class="leaderboard-container">
+                <h2>排行榜</h2>
+                <div class="leaderboard-header">
+                    <div class="rank">排名</div>
+                    <div class="player-name">玩家</div>
+                    <div class="player-score">分数</div>
+                    <div class="player-time">时间</div>
+                </div>
+                <button class="clear-leaderboard-button" id="clearLeaderboard">清除排行榜</button>
+                <div class="leaderboard-list" id="leaderboard-list">
+                    <!-- 排行榜数据将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右侧游戏主界面 -->
+        <div class="game-wrapper">
+            <div class="container">
+                <header>
+                    <h1>2048</h1>
+                    <div class="scores-container">
+                        <div class="score-container">
+                            <div class="label">分数</div>
+                            <div class="value">0</div>
+                        </div>
+                        <div class="best-container">
+                            <div class="label">最佳</div>
+                            <div class="value">0</div>
+                        </div>
+                    </div>
+                </header>
+                
+                <div class="above-game">
+                    <p class="game-intro">使用方向键移动方块，合并相同数字，获得2048！</p>
+                    <button class="restart-button">重新开始</button>
+                </div>
+                
+                <div class="game-container">
+                    <div class="grid-container">
+                        <div class="grid-row">
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                        </div>
+                        <div class="grid-row">
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                        </div>
+                        <div class="grid-row">
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                        </div>
+                        <div class="grid-row">
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                        </div>
+                    </div>
+                    <div class="tile-container"></div>
+                </div>
+                
+                <div class="game-message">
+                    <p></p>
+                    <div class="lower">
+                        <button class="retry-button">重新开始</button>
+                        <button class="keep-playing-button">继续游戏</button>
+                    </div>
+                </div>
+                
+                <div class="score-sharing"></div>
+            </div>
+        </div>
+        
+        <!-- 右侧区域容器 -->
+        <div class="right-area">
+            <!-- 账户信息区域 -->
+            <div class="account-container" id="accountContainer">
+                <h2>账户信息</h2>
+                <div class="account-avatar">
+                    <div class="avatar-placeholder">👤</div>
+                </div>
+                <div class="account-info">
+                    <div class="account-item">
+                        <span class="label">用户名:</span>
+                        <span class="value" id="currentUsername">未登录</span>
+                    </div>
+                    <div class="account-item">
+                        <span class="label">账户状态:</span>
+                        <span class="value" id="accountStatus">离线</span>
+                    </div>
+                    <div class="account-item">
+                        <span class="label">最佳分数:</span>
+                        <span class="value" id="bestScore">0</span>
+                    </div>
+                </div>
+                <button class="auth-button" id="logoutButton">退出登录</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 用户注册/登录界面 -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-container">
+            <!-- 注册界面 -->
+            <div class="auth-form" id="registerForm" style="display: none;">
+                <h2>注册</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="registerUsername">用户名</label>
+                        <input type="text" id="registerUsername" name="username" placeholder="请输入用户名" required>
+                        <div class="error-message" id="usernameError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">密码</label>
+                        <div class="password-container">
+                            <input type="password" id="registerPassword" name="password" placeholder="请输入密码" required>
+                            <button type="button" class="toggle-password" id="toggleRegisterPassword">
+                                👁️
+                            </button>
+                        </div>
+                        <div class="password-strength" id="passwordStrength"></div>
+                        <div class="error-message" id="passwordError"></div>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="autoLogin" name="autoLogin">
+                        <label for="autoLogin">自动登录</label>
+                    </div>
+                    <button type="submit" class="auth-button">注册</button>
+                </form>
+                <div class="auth-footer">
+                    已有账户？ <a href="#" id="switchToLogin">立即登录</a>
+                </div>
+            </div>
+            
+            <!-- 登录界面 -->
+            <div class="auth-form" id="loginForm">
+                <h2>登录</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="loginUsername">用户名</label>
+                        <input type="text" id="loginUsername" name="username" placeholder="请输入用户名" required>
+                        <div class="error-message" id="loginUsernameError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">密码</label>
+                        <div class="password-container">
+                            <input type="password" id="loginPassword" name="password" placeholder="请输入密码" required>
+                            <button type="button" class="toggle-password" id="toggleLoginPassword">
+                                👁️
+                            </button>
+                        </div>
+                        <div class="error-message" id="loginPasswordError"></div>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="loginAutoLogin" name="autoLogin">
+                        <label for="loginAutoLogin">自动登录</label>
+                    </div>
+                    <button type="submit" class="auth-button">登录</button>
+                </form>
+                <div class="auth-footer">
+                    没有账户？ <a href="#" id="switchToRegister">立即注册</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        window.apiBaseUrl = "http://localhost:3000/api";
+    </script>
+    <script src="public/auth.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
