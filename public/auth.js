@@ -363,6 +363,8 @@ class AuthSystem {
                     // 更新游戏状态和UI组件
                     window.gameManager.updateAccountBestScore();
                     window.gameManager.renderLeaderboard();
+                    // 更新清除排行榜按钮显示
+                    window.gameManager.toggleClearLeaderboardButton();
                 }
 
                 return;
@@ -399,6 +401,9 @@ class AuthSystem {
     async updateAccountInfo(user) {
         // 🚨 未登录禁止更新账户信息
         if (!this.isLoggedIn) return;
+        
+        // 保存用户权限信息到localStorage
+        localStorage.setItem('isAdmin', user.is_admin ? 'true' : 'false');
         
         // 更新账户信息显示
         document.getElementById('currentUsername').textContent = user.username;
@@ -443,14 +448,20 @@ class AuthSystem {
             console.error('退出登录失败:', error);
         }
         
-        // 清除登录状态
+        // 清除登录状态和权限信息
         this.removeAccessToken();
+        localStorage.removeItem('isAdmin');
         this.isLoggedIn = false;
         
         // 更新账户信息显示
         document.getElementById('currentUsername').textContent = '未登录';
         document.getElementById('accountStatus').textContent = '离线';
         document.getElementById('bestScore').textContent = '0';
+        
+        // 更新清除排行榜按钮显示
+        if (typeof window.gameManager !== 'undefined' && typeof window.gameManager.toggleClearLeaderboardButton === 'function') {
+            window.gameManager.toggleClearLeaderboardButton();
+        }
         
         // 显示认证界面
         document.getElementById('authOverlay').style.display = 'flex';

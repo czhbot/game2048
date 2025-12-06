@@ -896,16 +896,20 @@ GameManager.prototype.toggleClearLeaderboardButton = function() {
     var clearButton = document.getElementById('clearLeaderboard');
     if (clearButton) {
         var accessToken = localStorage.getItem('accessToken');
-        // 简化处理，仅在有访问令牌时显示清除按钮
-        clearButton.style.display = accessToken ? 'block' : 'none';
+        var isAdmin = localStorage.getItem('isAdmin') === 'true';
+        // 只有管理员才能看到清除排行榜按钮
+        clearButton.style.display = (accessToken && isAdmin) ? 'block' : 'none';
         
-        // 如果已登录，绑定事件
-        if (accessToken) {
+        // 如果是管理员，绑定事件
+        if (accessToken && isAdmin) {
             clearButton.onclick = async function() {
                 if (confirm('确定要清除所有排行榜数据吗？')) {
                     await this.clearLeaderboard();
                 }
             }.bind(this);
+        } else {
+            // 不是管理员，移除事件绑定
+            clearButton.onclick = null;
         }
     }
 };
