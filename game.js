@@ -352,7 +352,7 @@ GameManager.prototype.startNewSession = async function() {
     }
     
     try {
-        const response = await fetch('http://localhost:3000/api/leaderboard/start-session', {
+        const response = await fetch('/api/leaderboard/start-session', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -595,7 +595,7 @@ GameManager.prototype.updateAccountBestScore = async function() {
             }
             
             // 3. 从服务器获取最新的最佳分数，确保数据一致性
-            const response = await fetch('http://localhost:3000/api/users/me/best-score', {
+            const response = await fetch('/api/users/me/best-score', {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 }
@@ -780,7 +780,7 @@ GameManager.prototype.saveScoreToLeaderboard = async function(scoreToSave) {
     if (!token || !scoreToSave || scoreToSave <= 0) return;
 
     try {
-        await fetch("http://localhost:3000/api/leaderboard/submit", {
+        await fetch("/api/leaderboard/submit", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -809,7 +809,7 @@ GameManager.prototype.refreshUserInfoUI = async function() {
     if (!token) return;
 
     try {
-        const res = await fetch("http://localhost:3000/api/auth/me", {
+        const res = await fetch("/api/auth/me", {
             headers: {
                 "Authorization": `Bearer ${token}`
             },
@@ -827,7 +827,7 @@ GameManager.prototype.refreshUserInfoUI = async function() {
         }
 
         // 获取并更新最佳分数
-        const bestScoreRes = await fetch("http://localhost:3000/api/users/me/best-score", {
+        const bestScoreRes = await fetch("/api/users/me/best-score", {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
@@ -852,7 +852,7 @@ GameManager.prototype.refreshUserInfoUI = async function() {
 // 获取排行榜数据
 GameManager.prototype.getLeaderboard = async function() {
     try {
-        const response = await fetch('http://localhost:3000/api/leaderboard');
+        const response = await fetch('/api/leaderboard');
         if (response.ok) {
             const data = await response.json();
             return data.leaderboard;
@@ -921,7 +921,7 @@ GameManager.prototype.clearLeaderboard = async function() {
     }
     
     try {
-        const response = await fetch('http://localhost:3000/api/leaderboard', {
+        const response = await fetch('/api/leaderboard', {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${accessToken}`

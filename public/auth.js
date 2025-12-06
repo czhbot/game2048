@@ -1,7 +1,7 @@
 // 用户认证系统
 class AuthSystem {
     constructor() {
-        this.apiBaseUrl = window.apiBaseUrl || 'http://localhost:3000/api';
+        this.apiBaseUrl = window.apiBaseUrl || '/api';
         this.isLoggedIn = false;
     }
 
