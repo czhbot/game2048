@@ -55,12 +55,8 @@ server/logs/
 # TraeAI generated files
 .trae/
 
-# Ignore specific image
-background_image/生成特定风格图片.png
-
 # Ignore all bcrypt prebuilt files
 bcrypt/prebuilds/
 
-# Ignore all .node binary files and png images
+# Ignore all .node binary files
 *.node
-*.png
