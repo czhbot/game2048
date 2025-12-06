@@ -490,6 +490,24 @@ GameManager.prototype.updateBestScoreDisplay = function(bestScore) {
             }
             
             if (direction) {
+                // 判断方向是否发生变化
+                var lastDirection = self.inputQueue.length > 0 ? 
+                    self.inputQueue[self.inputQueue.length - 1] : null;
+                
+                // 如果方向发生变化，清空队列
+                if (lastDirection && 
+                    (lastDirection.dx !== direction.dx || lastDirection.dy !== direction.dy)) {
+                    self.inputQueue = []; // 清空队列
+                    self.isMoving = false; // 重置移动状态
+                }
+                
+                // 如果已经在移动中，且方向没有变化，可以跳过重复的输入
+                if (self.isMoving && lastDirection && 
+                    lastDirection.dx === direction.dx && 
+                    lastDirection.dy === direction.dy) {
+                    return; // 跳过重复输入
+                }
+                
                 self.inputQueue.push(direction);
                 self.processQueue();
             }
