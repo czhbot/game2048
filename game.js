@@ -422,6 +422,30 @@ GameManager.prototype.setup = function() {
     
     // 开始新游戏会话，获取新的session_id
     this.startNewSession();
+    
+    // 初始化游戏介绍文本
+    this.updateGameIntroText();
+    
+    // 添加窗口大小变化事件监听器，动态更新游戏介绍文本
+    var self = this;
+    window.addEventListener('resize', function() {
+        self.updateGameIntroText();
+    });
+};
+
+// 更新游戏介绍文本
+GameManager.prototype.updateGameIntroText = function() {
+    var gameIntro = document.querySelector('.game-intro');
+    if (!gameIntro) return;
+    
+    // 检查屏幕宽度，确定是手机端还是电脑端
+    if (window.innerWidth <= 1024) {
+        // 手机端：更新游戏介绍文本，去掉第一行的感叹号
+        gameIntro.innerHTML = '滑动方块 合并相同数字 获得2048<br>可以通过禁用滑动来禁用游戏外操作';
+    } else {
+        // 电脑端：恢复原始游戏介绍文本
+        gameIntro.innerHTML = '使用方向键移动方块 合并相同数字 <br>获得2048！';
+    }
 };
 
 // 更新游戏界面顶部的最佳分数

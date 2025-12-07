@@ -1218,8 +1218,11 @@ header h1::before {
     header h1 {
         font-size: 36px;
         margin: 0;
-        padding: 6px 15px;
+        padding: 6px 0;
         line-height: 1.2;
+        width: 212px;
+        box-sizing: border-box;
+        text-align: center;
     }
     
     /* 修复渐变文字大小 - 确保与h1字体大小一致 */
@@ -1379,7 +1382,7 @@ header h1::before {
     .restart-button, .retry-button, .disable-swipe-button {
         padding: 10px 16px;
         font-size: 14px;
-        width: 90px;
+        width: 100px;
         margin: 0;
     }
     
@@ -1405,12 +1408,12 @@ header h1::before {
     /* 手机端按钮组布局 */
     .button-group {
         display: flex;
-        gap: 15%; /* 按钮宽度的15%作为间距 */
+        gap: 12px;
         justify-content: center;
         align-items: center;
         margin: 0 auto;
-        width: 100%;
-        max-width: 250px;
+        width: auto;
+        max-width: none;
     }
     
     /* 响应式认证界面 */
