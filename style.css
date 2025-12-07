@@ -395,6 +395,24 @@ header {
     gap: 16px;
 }
 
+/* 确保button-group在电脑端与scores-container对齐 */
+@media (min-width: 1025px) {
+    .above-game {
+        /* 保持原有布局 */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .button-group {
+        /* 调整宽度，使其与scores-container总宽度相同 */
+        width: calc(120px * 2 + 16px);
+        /* 确保restart-button右对齐 */
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+
 header h1 {
     font-size: 72px;
     font-weight: bold;
@@ -522,14 +540,14 @@ header h1::before {
     font-weight: 600;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5),
                  0 0 8px rgba(0, 0, 0, 0.3);
-    max-width: 600px;
+    max-width: 460px;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    flex-shrink: 0;
 }
 
-.restart-button, .retry-button {
-    background-color: #8f7a66;
+.restart-button, .retry-button, .disable-swipe-button {
     color: white;
     border: none;
     border-radius: 8px;
@@ -548,15 +566,65 @@ header h1::before {
     text-align: center;
 }
 
+/* 默认状态：渐变蓝色背景 */
+.disable-swipe-button {
+    background: linear-gradient(to bottom, #0077ff, #0055cc);
+}
+
+/* 激活状态：渐变红色背景 */
+.disable-swipe-button.active {
+    background: linear-gradient(to bottom, #ff4444, #cc0000);
+}
+
+.restart-button, .retry-button {
+    background-color: #8f7a66;
+}
+
+/* 按钮组样式 */
+.button-group {
+    display: flex;
+    gap: 15%; /* 按钮宽度的15%作为间距 */
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 300px;
+}
+
 .restart-button:hover, .retry-button:hover {
     background-color: #9f8b77;
     transform: translateY(-2px);
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
 }
 
-.restart-button:active, .retry-button:active {
+/* 禁用滑动按钮悬停效果 */
+.disable-swipe-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* 默认状态悬停渐变 */
+.disable-swipe-button:not(.active):hover {
+    background: linear-gradient(to bottom, #0099ff, #0077ff);
+}
+
+/* 激活状态悬停渐变 */
+.disable-swipe-button.active:hover {
+    background: linear-gradient(to bottom, #ff6666, #ff4444);
+}
+
+.restart-button:active, .retry-button:active, .disable-swipe-button:active {
     transform: translateY(0);
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    opacity: 0.9;
+}
+
+/* 默认在电脑端隐藏禁用滑动按钮 */
+.disable-swipe-button {
+    display: none;
+}
+
+.button-group {
+    justify-content: flex-end;
 }
 
 /* 棋盘：绝对居中（真正位于屏幕中心） */
@@ -1288,11 +1356,27 @@ header h1::before {
     }
     
     /* 响应式按钮 */
-    .restart-button, .retry-button {
+    .restart-button, .retry-button, .disable-swipe-button {
         padding: 10px 16px;
         font-size: 14px;
         width: 90px;
         margin: 0;
+    }
+    
+    /* 手机端显示禁用滑动按钮 */
+    .disable-swipe-button {
+        display: inline-block;
+    }
+    
+    /* 手机端按钮组布局 */
+    .button-group {
+        display: flex;
+        gap: 15%; /* 按钮宽度的15%作为间距 */
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 250px;
     }
     
     /* 响应式认证界面 */

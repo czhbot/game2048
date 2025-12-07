@@ -338,6 +338,9 @@ function GameManager() {
     this.inputQueue     = [];
     this.isMoving       = false;
     
+    // 禁用滑动功能状态
+    this.swipeDisabled  = false;
+    
     // 初始化游戏
     this.setup();
     this.bindEvents();
@@ -552,6 +555,32 @@ GameManager.prototype.updateBestScoreDisplay = function(bestScore) {
             self.actuator.clearMessage();
         });
         
+        // 禁用滑动按钮事件
+        document.querySelector('.disable-swipe-button').addEventListener('click', function() {
+            // 切换禁用滑动状态
+            self.swipeDisabled = !self.swipeDisabled;
+            
+            // 更新按钮视觉状态
+            const button = this;
+            button.classList.toggle('active');
+            
+            // 添加点击反馈效果
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = '';
+            }, 100);
+            
+            // 如果禁用滑动，添加视觉提示
+            const gameContainer = document.querySelector('.game-container');
+            if (self.swipeDisabled) {
+                // 可以在这里添加视觉提示，比如改变棋盘边框颜色或添加提示文字
+                gameContainer.style.boxShadow = '0 0 0 2px #ff4444, 0 8px 24px rgba(0, 0, 0, 0.2)';
+            } else {
+                // 恢复默认样式
+                gameContainer.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.2)';
+            }
+        });
+        
         // 触摸事件处理 - 仅在移动设备上生效
         if ('ontouchstart' in window) {
             // 获取棋盘区域DOM元素
@@ -676,8 +705,11 @@ GameManager.prototype.updateBestScoreDisplay = function(bestScore) {
                     var touch = event.touches[0];
                     touchEndX = touch.clientX;
                     touchEndY = touch.clientY;
+                } else if (self.swipeDisabled) {
+                    // 如果滑动功能被禁用，阻止棋盘外的滑动默认行为
+                    event.preventDefault();
                 }
-                // 如果触摸在棋盘外，允许页面正常滚动
+                // 如果触摸在棋盘外且滑动功能未禁用，允许页面正常滚动
             };
             
             // 触摸结束事件
