@@ -857,6 +857,13 @@ header h1::before {
     display: none;
 }
 
+/* 手机端：删除游戏结束的白色遮罩 */
+@media (max-width: 1024px) {
+    .game-message.game-over {
+        background-color: transparent;
+    }
+}
+
 /* 统一按钮样式，确保宽度和高度完全相同 */
 .keep-playing-button, .retry-button {
     background-color: #8f7a66;
