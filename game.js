@@ -551,6 +551,228 @@ GameManager.prototype.updateBestScoreDisplay = function(bestScore) {
             self.keepPlaying = true;
             self.actuator.clearMessage();
         });
+        
+        // 触摸事件处理 - 仅在移动设备上生效
+        if ('ontouchstart' in window) {
+            // 获取棋盘区域DOM元素
+            var gameContainer = document.querySelector('.game-container');
+            
+            // 触摸状态变量
+            var touchStartX = 0;
+            var touchStartY = 0;
+            var touchEndX = 0;
+            var touchEndY = 0;
+            var isTouchingBoard = false;
+            var minSwipeDistance = 20; // 最小滑动距离阈值
+            
+            // 触摸开始事件
+            var touchStartHandler = function(event) {
+                // 检查是否正在显示认证界面
+                var authOverlay = document.getElementById('authOverlay');
+                var isOverlayVisible = false;
+                
+                if (authOverlay) {
+                    var computedStyle = window.getComputedStyle(authOverlay);
+                    isOverlayVisible = computedStyle.display !== 'none';
+                }
+                
+                if (isOverlayVisible) {
+                    // 认证界面可见，不处理触摸事件
+                    return;
+                }
+                
+                // 检查游戏结束界面是否可见
+                var gameMessage = document.querySelector('.game-message');
+                var isGameMessageVisible = gameMessage.classList.contains('show');
+                
+                if (isGameMessageVisible) {
+                    // 游戏结束界面可见，检查触摸点是否在按钮上
+                    var touch = event.touches[0];
+                    var retryButton = document.querySelector('.retry-button');
+                    var keepPlayingButton = document.querySelector('.keep-playing-button');
+                    
+                    // 检查触摸点是否在按钮上
+                    var isTouchingButton = false;
+                    
+                    // 检查是否在重新开始按钮上
+                    var retryRect = retryButton.getBoundingClientRect();
+                    isTouchingButton = touch.clientX >= retryRect.left && 
+                                     touch.clientX <= retryRect.right && 
+                                     touch.clientY >= retryRect.top && 
+                                     touch.clientY <= retryRect.bottom;
+                    
+                    // 如果不在重新开始按钮上，检查是否在继续游戏按钮上
+                    if (!isTouchingButton && keepPlayingButton.style.display !== 'none') {
+                        var keepPlayingRect = keepPlayingButton.getBoundingClientRect();
+                        isTouchingButton = touch.clientX >= keepPlayingRect.left && 
+                                         touch.clientX <= keepPlayingRect.right && 
+                                         touch.clientY >= keepPlayingRect.top && 
+                                         touch.clientY <= keepPlayingRect.bottom;
+                    }
+                    
+                    if (isTouchingButton) {
+                        // 触摸在按钮上，允许默认行为，触发点击事件
+                        isTouchingBoard = false;
+                        return;
+                    } else {
+                        // 触摸在游戏结束界面其他区域，阻止默认行为
+                        event.preventDefault();
+                        isTouchingBoard = false;
+                        return;
+                    }
+                }
+                
+                // 获取触摸点坐标
+                var touch = event.touches[0];
+                touchStartX = touch.clientX;
+                touchStartY = touch.clientY;
+                
+                // 检测触摸点是否在棋盘区域内
+                var rect = gameContainer.getBoundingClientRect();
+                isTouchingBoard = touch.clientX >= rect.left && 
+                                 touch.clientX <= rect.right && 
+                                 touch.clientY >= rect.top && 
+                                 touch.clientY <= rect.bottom;
+                
+                // 如果触摸在棋盘内，记录初始位置
+                if (isTouchingBoard) {
+                    // 阻止默认行为，避免页面滚动
+                    event.preventDefault();
+                }
+            };
+            
+            // 触摸移动事件
+            var touchMoveHandler = function(event) {
+                // 检查是否正在显示认证界面
+                var authOverlay = document.getElementById('authOverlay');
+                var isOverlayVisible = false;
+                
+                if (authOverlay) {
+                    var computedStyle = window.getComputedStyle(authOverlay);
+                    isOverlayVisible = computedStyle.display !== 'none';
+                }
+                
+                if (isOverlayVisible) {
+                    // 认证界面可见，不处理触摸事件
+                    return;
+                }
+                
+                // 检查游戏结束界面是否可见
+                var gameMessage = document.querySelector('.game-message');
+                var isGameMessageVisible = gameMessage.classList.contains('show');
+                
+                if (isGameMessageVisible) {
+                    // 游戏结束界面可见，阻止默认行为，避免页面滚动
+                    event.preventDefault();
+                    return;
+                }
+                
+                // 如果触摸在棋盘内，处理滑动
+                if (isTouchingBoard) {
+                    // 阻止默认行为，避免页面滚动
+                    event.preventDefault();
+                    
+                    // 更新触摸结束坐标
+                    var touch = event.touches[0];
+                    touchEndX = touch.clientX;
+                    touchEndY = touch.clientY;
+                }
+                // 如果触摸在棋盘外，允许页面正常滚动
+            };
+            
+            // 触摸结束事件
+            var touchEndHandler = function(event) {
+                // 检查是否正在显示认证界面
+                var authOverlay = document.getElementById('authOverlay');
+                var isOverlayVisible = false;
+                
+                if (authOverlay) {
+                    var computedStyle = window.getComputedStyle(authOverlay);
+                    isOverlayVisible = computedStyle.display !== 'none';
+                }
+                
+                if (isOverlayVisible) {
+                    // 认证界面可见，不处理触摸事件
+                    return;
+                }
+                
+                // 检查游戏结束界面是否可见
+                var gameMessage = document.querySelector('.game-message');
+                var isGameMessageVisible = gameMessage.classList.contains('show');
+                
+                if (isGameMessageVisible) {
+                    // 游戏结束界面可见，不处理棋盘滑动，允许按钮点击
+                    isTouchingBoard = false;
+                    return;
+                }
+                
+                // 如果触摸在棋盘内，处理滑动结束
+                if (isTouchingBoard) {
+                    // 计算滑动距离
+                    var deltaX = touchEndX - touchStartX;
+                    var deltaY = touchEndY - touchStartY;
+                    
+                    // 计算滑动角度和距离
+                    var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                    
+                    // 只有滑动距离超过阈值才处理
+                    if (distance >= minSwipeDistance) {
+                        // 判断滑动方向
+                        var direction = null;
+                        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                            // 水平滑动
+                            if (deltaX > 0) {
+                                direction = { dx: 0, dy: 1 }; // 右
+                            } else {
+                                direction = { dx: 0, dy: -1 }; // 左
+                            }
+                        } else {
+                            // 垂直滑动
+                            if (deltaY > 0) {
+                                direction = { dx: 1, dy: 0 }; // 下
+                            } else {
+                                direction = { dx: -1, dy: 0 }; // 上
+                            }
+                        }
+                        
+                        // 执行移动操作
+                        if (direction) {
+                            // 检查游戏状态
+                            if (self.over || self.won && !self.keepPlaying) return;
+                            
+                            // 判断方向是否发生变化
+                            var lastDirection = self.inputQueue.length > 0 ? 
+                                self.inputQueue[self.inputQueue.length - 1] : null;
+                            
+                            // 如果方向发生变化，清空队列
+                            if (lastDirection && 
+                                (lastDirection.dx !== direction.dx || lastDirection.dy !== direction.dy)) {
+                                self.inputQueue = []; // 清空队列
+                                self.isMoving = false; // 重置移动状态
+                            }
+                            
+                            // 如果已经在移动中，且方向没有变化，可以跳过重复的输入
+                            if (self.isMoving && lastDirection && 
+                                lastDirection.dx === direction.dx && 
+                                lastDirection.dy === direction.dy) {
+                                return; // 跳过重复输入
+                            }
+                            
+                            self.inputQueue.push(direction);
+                            self.processQueue();
+                        }
+                    }
+                }
+                
+                // 重置触摸状态
+                isTouchingBoard = false;
+            };
+            
+            // 绑定触摸事件
+            document.addEventListener('touchstart', touchStartHandler, { passive: false });
+            document.addEventListener('touchmove', touchMoveHandler, { passive: false });
+            document.addEventListener('touchend', touchEndHandler, { passive: false });
+        }
     };
 
 // 随机生成方块
