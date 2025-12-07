@@ -40,8 +40,10 @@ body::before {
 .main-container {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: auto;
     z-index: 2;
+    min-height: 100vh;
+    overflow: visible;
 }
 
 /* 左侧区域容器 */
@@ -1094,7 +1096,7 @@ header h1::before {
     /* 账户信息区域 - 位于最底部 */
     .right-area {
         order: 3;
-        margin-bottom: 20px;
+        margin-bottom: 0;
         padding: 0;
     }
     
@@ -1278,10 +1280,11 @@ header h1::before {
     
     /* 响应式游戏介绍 */
     .game-intro {
-        font-size: 14px;
+        font-size: 12px;
         text-align: center;
         margin: 0;
         max-width: 100%;
+        white-space: nowrap;
     }
     
     /* 响应式按钮 */
@@ -1358,15 +1361,15 @@ header h1::before {
 
 /* 版权信息样式 - 简洁版，仅一行文字 */
 .copyright {
-    position: relative;
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
     text-align: center;
-    color: #776e65;
+    color: #000000;
     font-size: 14px;
     font-weight: 500;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
     letter-spacing: 0.5px;
-    margin-top: 15px;
     padding: 10px 0;
     z-index: 100;
 }
@@ -1374,17 +1377,18 @@ header h1::before {
 /* 响应式版权信息 */
 @media (max-width: 1024px) {
     .copyright {
-        font-size: 13px;
-        margin-top: 12px;
-        padding: 8px 0;
-    }
-}
-
-@media (max-width: 520px) {
-    .copyright {
+        position: relative;
         font-size: 12px;
-        margin-top: 10px;
+        margin-top: 0;
         padding: 6px 0;
+        transform: none;
+        order: 4;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto 20px;
+        background-color: rgba(250, 248, 239, 0.8);
+        color: #000000;
+        align-self: center;
     }
 }
 
