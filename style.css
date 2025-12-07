@@ -387,11 +387,12 @@ header {
     width: 100%;
     max-width: 800px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: 0;
     padding: 0 20px;
     box-sizing: border-box;
+    gap: 16px;
 }
 
 header h1 {
@@ -406,7 +407,7 @@ header h1 {
     border: 1px solid rgba(200, 184, 164, 0.1);
     border-radius: 15px;
     box-shadow: 0 8px 24px rgba(119,110,101,0.1);
-    padding: 9px 20px;
+    padding: 9px 60px;
     display: inline-block;
     position: relative;
     overflow: hidden;
@@ -450,9 +451,7 @@ header h1::before {
     display: flex;
     gap: 16px;
     align-items: center;
-    flex: 1;
     justify-content: center;
-    margin: 0 16px;
 }
 
 .score-container, .best-container {
@@ -543,9 +542,10 @@ header h1::before {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     white-space: nowrap;
-    min-width: 100px;
-    width: 100px;
+    min-width: 120px;
+    width: 120px;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .restart-button:hover, .retry-button:hover {
