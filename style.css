@@ -1356,6 +1356,51 @@ header h1::before {
     }
 }
 
+/* 版权信息样式 */
+.footer {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    background-color: rgba(238, 228, 218, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(200, 184, 164, 0.2);
+    z-index: 100;
+}
+
+.copyright {
+    color: #776e65;
+    font-size: 14px;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.5px;
+}
+
+/* 响应式版权信息 */
+@media (max-width: 1024px) {
+    .footer {
+        padding: 15px 0;
+        margin-top: 30px;
+    }
+    
+    .copyright {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 520px) {
+    .footer {
+        padding: 12px 0;
+        margin-top: 20px;
+    }
+    
+    .copyright {
+        font-size: 12px;
+    }
+}
+
 /* 提高认证覆盖层的优先级 */
 #authOverlay {
     z-index: 99999 !important;

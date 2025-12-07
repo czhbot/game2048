@@ -168,6 +168,10 @@ Contributions are welcome! Feel free to submit issues and pull requests.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## ©️ Copyright
+
+Copyright 2025 CZH. All Rights Reserved.
+
 ## 🙏 Acknowledgments
 
 - Original 2048 game by Gabriele Cirulli
